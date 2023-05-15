@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">mysecondapplication</string>
+    <string name="base_url">https://cataas.com</string>
+</resources>
