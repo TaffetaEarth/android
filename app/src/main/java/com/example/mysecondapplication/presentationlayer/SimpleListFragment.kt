@@ -37,7 +37,6 @@ class SimpleListFragment : Fragment() {
         }
 
         provider.load {
-            Log.d("TECH", "submit list with size=${it.size}")
             itemAdapter.submitList(it)
         }
     }
