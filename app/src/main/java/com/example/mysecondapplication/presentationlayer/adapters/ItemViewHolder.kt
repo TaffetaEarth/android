@@ -1,8 +1,10 @@
 package com.example.mysecondapplication.presentationlayer.adapters
 
+import android.content.Context
 import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
@@ -18,7 +20,12 @@ import com.example.mysecondapplication.objects.Item
 class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     private val image = view.findViewById<ImageView>(R.id.image)
 
+    lateinit var context: Context
+    var position: Int? = null
+
     private val imageLoader by lazy { Glide.with(image) }
+
+    private var loaded: Boolean = true
 
     fun bind(item: Item) {
         imageLoader
@@ -33,10 +40,9 @@ class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
                     target: Target<Drawable?>?,
                     isFirstResource: Boolean
                 ): Boolean {
-                    image.isEnabled = true
+                    loaded = false
                     return false
                 }
-
 
                 override fun onResourceReady(
                     resource: Drawable?,
@@ -45,7 +51,7 @@ class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
                     dataSource: DataSource?,
                     isFirstResource: Boolean
                 ): Boolean {
-                    image.isEnabled = false
+                    loaded = true
                     return false
                 }
             })
@@ -54,9 +60,13 @@ class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         image.adjustViewBounds = true
     }
 
-    fun setOnClickListenerToImage(item: Item) {
+    fun setReloadClickListenerToImage(item: Item) {
         image.setOnClickListener {
-            bind(item)
+            if (loaded) {
+                Toast.makeText(context, position!!.toString(), Toast.LENGTH_SHORT).show()
+            } else {
+                bind(item)
+            }
         }
     }
 }

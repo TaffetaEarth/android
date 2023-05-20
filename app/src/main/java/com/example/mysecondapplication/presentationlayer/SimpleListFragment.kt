@@ -15,8 +15,8 @@ import com.example.mysecondapplication.presentationlayer.adapters.ItemAdapter
 import com.example.mysecondapplication.R
 
 class SimpleListFragment : Fragment() {
-    protected val provider by lazy { initializeProvider() }
-    protected val itemAdapter = ItemAdapter()
+    private val provider by lazy { initializeProvider() }
+    private val itemAdapter = ItemAdapter()
 
     private val accessor = RetrofitProvider().provide().create(IItemAccessor2::class.java)
 
@@ -33,6 +33,7 @@ class SimpleListFragment : Fragment() {
 
         view.findViewById<RecyclerView>(R.id.list).apply {
             layoutManager = GridLayoutManager(requireContext(), COLUMN_COUNT)
+            itemAdapter.context = requireContext()
             adapter = itemAdapter
         }
 
